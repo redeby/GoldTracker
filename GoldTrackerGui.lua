@@ -108,7 +108,7 @@ end
 function GoldTracker.UpdateAllBank()
 	GoldTrackerGuiOverviewAllBankLabel:SetColor(colorTextAll:UnpackRGBA())
 	GoldTrackerGuiOverviewAllBank:SetText(string.format(GoldTracker.savedVariablesAccount.bank .. "g"))
-	GoldTrackerGuiOverviewAllBank:SetColor(colorBalanceDimmed:UnpackRGBA())
+	GoldTrackerGuiOverviewAllBank:SetColor(colorBalance:UnpackRGBA())
 end
 
 function GoldTracker.UpdateAllBalance()
@@ -130,38 +130,59 @@ function GoldTracker.UpdateAllAlts()
 	if (numchars == 1) then
 		return
 	end
-	GoldTrackerGuiOverview:SetDimensions(255,305+numchars*20);
-	GoldTrackerGuiOverviewBackdrop:SetDimensions(255,305+numchars*20);
+	GoldTrackerGuiOverview:SetDimensions(255,305+numchars*40);
+	GoldTrackerGuiOverviewBackdrop:SetDimensions(255,305+numchars*40);
 	local mylabel = ""
-	local altstatus = ""
+	local sum = 0
 	local index = 1
 	for i=1, numchars do
 		charname = GoldTracker.savedVariablesAccount.charlist[i];
 		if (charname ~= GetUnitName("Player")) then
+			GoldTracker.savedVariablesAlt = ZO_SavedVars:New("GoldTrackerSavedVariables", 1, nil, LastResetDefaults, "Default", GetDisplayName(), charname);
 			mylabel = "GoldTrackerGuiOverviewAltLabel"..index
 			Alt = wm:CreateControl(mylabel, GoldTrackerGuiOverview, CT_LABEL);
-			Alt:SetColor(colorPlayerNameDimmed:UnpackRGBA())
+			Alt:SetColor(colorPlayerName:UnpackRGBA())
 			Alt:SetFont("ZoFontChat")
 			Alt:SetWrapMode(TRUNCATE)
 			Alt:SetDrawLayer(1)
-			Alt:SetAnchor(TOPLEFT, GoldTrackerGuiOverview, TOPLEFT, 8 , 175+20*index)
+			Alt:SetAnchor(TOPLEFT, GoldTrackerGuiOverview, TOPLEFT, 8 , 155+40*index)
 			Alt:SetDimensions(245, 30)
 			Alt:SetScale(1)
 			Alt:SetText(GoldTracker.savedVariablesAccount.charlist[i]);
-			mylabel = "GoldTrackerGuiOverviewAlt"..index
+			mylabel = "GoldTrackerGuiOverviewAltIncome"..index			
 			Alt = wm:CreateControl(mylabel, GoldTrackerGuiOverview, CT_LABEL);
-			Alt:SetColor(colorPlayerNameDimmed:UnpackRGBA())
+			Alt:SetColor(colorIncome:UnpackRGBA())
 			Alt:SetFont("ZoFontChat")
 			Alt:SetWrapMode(TRUNCATE)
 			Alt:SetDrawLayer(1)
-			Alt:SetAnchor(TOPLEFT, GoldTrackerGuiOverview, TOPLEFT, 8 , 175+20*index)
+			Alt:SetAnchor(TOPLEFT, GoldTrackerGuiOverview, TOPLEFT, 8 , 175+40*index)
+			Alt:SetDimensions(245, 30)
+			Alt:SetScale(1)
+			Alt:SetHorizontalAlignment(TEXT_ALIGN_LEFT)
+			Alt:SetText(string.format(GoldTracker.savedVariablesAlt.income .. "g"));
+			mylabel = "GoldTrackerGuiOverviewAltExpense"..index			
+			Alt = wm:CreateControl(mylabel, GoldTrackerGuiOverview, CT_LABEL);
+			Alt:SetColor(colorExpense:UnpackRGBA())
+			Alt:SetFont("ZoFontChat")
+			Alt:SetWrapMode(TRUNCATE)
+			Alt:SetDrawLayer(1)
+			Alt:SetAnchor(TOPLEFT, GoldTrackerGuiOverview, TOPLEFT, 8 , 175+40*index)
+			Alt:SetDimensions(245, 30)
+			Alt:SetScale(1)
+			Alt:SetHorizontalAlignment(TEXT_ALIGN_CENTER)
+			Alt:SetText(string.format(GoldTracker.savedVariablesAlt.expenses .. "g"));
+			mylabel = "GoldTrackerGuiOverviewAltBalance"..index
+			Alt = wm:CreateControl(mylabel, GoldTrackerGuiOverview, CT_LABEL);
+			Alt:SetColor(colorBalance:UnpackRGBA())
+			Alt:SetFont("ZoFontChat")
+			Alt:SetWrapMode(TRUNCATE)
+			Alt:SetDrawLayer(1)
+			Alt:SetAnchor(TOPLEFT, GoldTrackerGuiOverview, TOPLEFT, 8 , 175+40*index)
 			Alt:SetDimensions(245, 30)
 			Alt:SetScale(1)
 			Alt:SetHorizontalAlignment(TEXT_ALIGN_RIGHT)
-			GoldTracker.savedVariablesAlt = ZO_SavedVars:New("GoldTrackerSavedVariables", 1, nil, LastResetDefaults, "Default", GetDisplayName(), charname);
-			altstatus = GoldTracker.savedVariablesAlt.income + GoldTracker.savedVariablesAlt.expenses
-			altstatus = altstatus.."/"..GoldTracker.savedVariablesAlt.resetBalance
-			Alt:SetText(altstatus);
+			sum = GoldTracker.savedVariablesAlt.resetBalance + GoldTracker.savedVariablesAlt.income + GoldTracker.savedVariablesAlt.expenses;
+			Alt:SetText(string.format(sum .. "g"));
 			index = index + 1
 		end
 	end

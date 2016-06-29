@@ -94,7 +94,7 @@
 					<Dimensions x="245" y="30" />
 					<Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" offsetX="8" offsetY="-75"/>
 				</Label>
-				<Label name="$(parent)AllBankLabel" layer="0" level="1" font="ZoFontChat" inheritAlpha="true" color="4D6AFF" wrapMode="TRUNCATE" verticalAlignment="CENTER" horizontalAlignment="LEFT" text="Bank:">
+				<Label name="$(parent)AllBankLabel" layer="0" level="1" font="ZoFontChat" inheritAlpha="true" color="4D6AFF" wrapMode="TRUNCATE" verticalAlignment="CENTER" horizontalAlignment="LEFT" text="Bank Balance:">
 					<Dimensions x="245" y="30" />
 					<Anchor point="TOPLEFT" relativeTo="$(parent)" relativePoint="BOTTOMLEFT" offsetX="8" offsetY="-55"/>
 				</Label>
