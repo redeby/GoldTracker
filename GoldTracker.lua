@@ -79,6 +79,26 @@ function GoldTracker.Reset()
 	GoldTracker:UpdateAllBalance()
 end
 
+function GoldTracker.ResetAll()
+	local numchars = #GoldTracker.savedVariablesAccount.charlist
+	local index = 1	
+	if (numchars > 1) then
+		for i=1, numchars do
+			charname = GoldTracker.savedVariablesAccount.charlist[i];
+			if (charname ~= GetUnitName("Player")) then
+				GoldTracker.savedVariablesAlt = ZO_SavedVars:New("GoldTrackerSavedVariables", 1, nil, LastResetDefaults, "Default", GetDisplayName(), charname);
+				GoldTracker.savedVariablesAlt.resetBalance=GoldTracker.savedVariablesAlt.resetBalance+GoldTracker.savedVariablesAlt.income+GoldTracker.savedVariablesAlt.expenses;
+				GoldTracker.savedVariablesAlt.income=0;
+				GoldTracker.savedVariablesAlt.expenses=0;
+				index = index + 1
+			end
+		end
+	end
+	GoldTracker:Reset();
+	ReloadUI();
+end
+
+
 -- Adds the charactername to the list of characters using this addon
 -- I couldn't find any API function getting list of characters in the
 -- saved variables file so I created this function to keep track of this.
@@ -116,7 +136,7 @@ local function slashHandler(userInput)
 	end
 
 	if ("resetall" == command[1]) then
-		GoldTracker:Reset();
+		GoldTracker:ResetAll();
 		d("reset all characters");
 		return;
 	end
